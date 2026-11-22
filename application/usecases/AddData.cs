@@ -1,4 +1,3 @@
-using System.Runtime.ExceptionServices;
 using POS.domain.entities;
 using POS.domain.interfaces;
 
@@ -34,6 +33,17 @@ public class AddStudentCase
             return Result.DataBaseError;
 
         return Result.Success;
+    }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.InvalidArgument => "InvalidArgument",
+            _ => "UnknownError",
+        };
     }
 }
 
@@ -85,6 +95,18 @@ public class AddCriterionCase
             return Result.DataBaseError;
 
         return Result.Success;
+    }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.AlreadyExists => "AlreadyExists",
+            Result.InvalidArgument => "InvalidArgument",
+            _ => "UnknownError",
+        };
     }
 }
 
@@ -141,5 +163,18 @@ public class AddEvaluationCase
             return Result.DataBaseError;
 
         return Result.Success;
+    }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.AlreadyExists => "AlreadyExists",
+            Result.InvalidArgument => "InvalidArgument",
+            Result.DoNotExist => "DoNotExist",
+            _ => "UnknownError",
+        };
     }
 }

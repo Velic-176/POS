@@ -1,35 +1,35 @@
-namespace POS.domain.entities
+namespace POS.domain.entities;
+
+public class Student
 {
-    public class Student
+    public readonly Guid Id;
+    public string Name { get; private set; }
+
+    private Student(Guid id, string name)
     {
-        public readonly Guid Id;
-        public string Name{get; private set;}
+        Id = id;
+        Name = name;
+    }
 
-        private Student(Guid id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
+    static public Student? Create(Guid id, string name)
+    {
+        if (!IsNameValid(name) || id == Guid.Empty) return null; // чтобы прерывать создание в корне. Заготовка под будущий Result и логи
 
-        static public Student? Create(Guid id, string name)
-        {
-            if (!IsNameValid(name) || id == Guid.Empty) return null; // чтобы прерывать создание в корне. Заготовка под будущий Result и логи
+        return new Student(id, name);
+    }
 
-            return new Student(id, name);
-        }
+    public bool ChangeName(string new_name)
+    {
+        if (!IsNameValid(new_name)) return false;
 
-        public bool ChangeName(string new_name)
-        {
-            if (!IsNameValid(new_name)) return false;
+        Name = new_name;
+        return true;
+    }
 
-            Name = new_name;
-            return true;
-        }
-
-        public static bool IsNameValid(string name)
+    public static bool IsNameValid(string name)
     {
         // проверка на существование
-        if (name == null || name == "") 
+        if (name == null || name == "")
             return false;
 
         // проверка на корректные символы
@@ -43,7 +43,7 @@ namespace POS.domain.entities
         char[] separators = [' '];
         var splited = name.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         int wordCount = splited.Length;
-        if (wordCount < 2 || wordCount > 3) 
+        if (wordCount < 2 || wordCount > 3)
             return false;
 
 
@@ -55,6 +55,5 @@ namespace POS.domain.entities
         }
 
         return true;
-    }
     }
 }

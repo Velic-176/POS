@@ -1,5 +1,3 @@
-// using System.Numerics;
-using POS.application.usecases;
 using POS.domain.valueobjects;
 namespace POS.domain.entities;
 
@@ -13,9 +11,9 @@ public class Rubricator
         CriteriaNotFound
     }
 
-    public int Count{get; private set;}
-    public Dictionary<string, Criterion> Criteria{get; private set;} // {название : Criterion}
-    public Result Res{get; private set;}
+    public int Count { get; private set; }
+    public Dictionary<string, Criterion> Criteria { get; private set; } // {название : Criterion}
+    public Result Res { get; private set; }
 
     public Rubricator()
     {
@@ -28,7 +26,7 @@ public class Rubricator
     // при дубликатах сохраняет первое вхождение
     public Rubricator(List<Criterion> criteria)
     {
-        Criteria= [];
+        Criteria = [];
         Count = 0;
         if (criteria != null)
         {
@@ -42,7 +40,7 @@ public class Rubricator
 
     // проверяет согласованность с остальными критериями рубрикатора
     public Result AddCriterion(Criterion criterion)
-    {   
+    {
         // проверка на уникальность
         bool res = Criteria.TryAdd(criterion.Name, criterion);
         if (!res)
@@ -54,11 +52,11 @@ public class Rubricator
 
     public Result RemoveCriterion(Guid id)
     {
-        foreach(var criterion in Criteria.Values)
+        foreach (var criterion in Criteria.Values)
         {
             if (criterion.Id == id)
             {
-                if (!Criteria.Remove(criterion.Name)) 
+                if (!Criteria.Remove(criterion.Name))
                     return Result.CriteriaNotFound;
                 --Count;
                 return Result.Success;
@@ -69,7 +67,7 @@ public class Rubricator
 
     public bool Contains(Guid id)
     {
-        foreach(var criterion in Criteria.Values)
+        foreach (var criterion in Criteria.Values)
         {
             if (criterion.Id == id)
                 return true;
@@ -79,15 +77,40 @@ public class Rubricator
 
     public Criterion? GetById(Guid id)
     {
-        foreach(var criterion in Criteria.Values)
+        foreach (var criterion in Criteria.Values)
         {
             if (criterion.Id == id)
             {
                 Res = Result.Success;
-                return criterion;   
+                return criterion;
             }
         }
         Res = Result.CriteriaNotFound;
         return null;
+    }
+
+    public Criterion? GetByName(string name)
+    {
+        Criterion? cr;
+        if (!Criteria.TryGetValue(name, out cr))
+        {
+            Res = Result.CriteriaNotFound;
+            return null;
+        }
+
+        Res = Result.Success;
+        return cr;
+    }
+
+    public string GetError()
+    {
+        return Res switch
+        {
+            Result.Success => "Success",
+            Result.InvalidArgument => "InvalidArgument",
+            Result.CriterionAlreadyExists => "CriterionAlreadyExists",
+            Result.CriteriaNotFound => "CriteriaNotFound",
+            _ => "UnknownError",
+        };
     }
 }

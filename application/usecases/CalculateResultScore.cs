@@ -21,7 +21,7 @@ public class CalculateResultScore
     private readonly IStudentRepository _students_repo;
     private readonly IRubricatorRepository _rubricator_repo;
     private readonly ResultEvalCalcService _calculator;
-    public Result Res{get; private set;}
+    public Result Res { get; private set; }
 
     public CalculateResultScore(ResultEvalCalcService calc, IEvaluationRepository evaluations, IStudentRepository students, IRubricatorRepository criteria)
     {
@@ -32,10 +32,10 @@ public class CalculateResultScore
         _calculator = calc;
     }
 
-    public Score? Evaluate(Guid student)
+    public float? Evaluate(Guid student)
     {
         // проверка студента на существование
-        if (_students_repo.GetById(student) == null) 
+        if (_students_repo.GetById(student) == null)
         {
             Res = Result.StudentDoNotExist;
             return null;
@@ -67,18 +67,23 @@ public class CalculateResultScore
         Score? score = _calculator.Evaluate(evals);
         if (score == null)
         {
-            if (_calculator.Res == ResultEvalCalcService.Result.InvalidScore)
+            if (_calculator.GetError() == "InvalidScore")
             {
                 Res = Result.InvalidScore;
                 return null;
             }
-            if (_calculator.Res == ResultEvalCalcService.Result.InvalidStrategy)
+            if (_calculator.GetError() == "InvalidStrategy")
             {
                 Res = Result.InvalidStrategy;
                 return null;
             }
+            else
+            {
+                Res = Result.UnknownError;
+                return null;
+            }
         }
-        return score;
+        return score.Value;
     }
 
     // score, max_score, weight
@@ -101,5 +106,19 @@ public class CalculateResultScore
         }
 
         return res;
+    }
+
+    public string GetError()
+    {
+        return Res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.StudentDoNotExist => "StudentDoNotExist",
+            Result.InvalidScore => "InvalidScore",
+            Result.EvalOnUnknownCriterion => "EvalOnUnknownCriterion",
+            Result.InvalidStrategy => "InvalidStrategy",
+            _ => "UnknownError",
+        };
     }
 }

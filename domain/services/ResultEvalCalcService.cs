@@ -14,9 +14,9 @@ public class ResultEvalCalcService
         InvalidStrategy
     }
     static readonly int NUM_OF_STRATEGIES = 2;
-    
-    public int Strategy{get; private set;}
-    public Result Res{get; private set;}
+
+    public int Strategy { get; private set; }
+    public Result Res { get; private set; }
 
     public ResultEvalCalcService(int strategy)
     {
@@ -27,8 +27,8 @@ public class ResultEvalCalcService
     public bool ChangeStrategy(int strategy)
     {
         if (strategy > NUM_OF_STRATEGIES || strategy < 1)
-        { 
-            Res = Result.InvalidStrategy; 
+        {
+            Res = Result.InvalidStrategy;
             return false;
         }
 
@@ -41,15 +41,15 @@ public class ResultEvalCalcService
     {
 
         Score? res;
-        switch(Strategy)
+        switch (Strategy)
         {
-        case(1): res = EvaluationStategyV1(evals); break;
-        case(2): res = EvaluationStategyV2(evals); break;
-        default: Res = Result.InvalidStrategy; return null;
+            case (1): res = EvaluationStategyV1(evals); break;
+            case (2): res = EvaluationStategyV2(evals); break;
+            default: Res = Result.InvalidStrategy; return null;
         }
 
         if (res != null && res.Value <= 10)
-        { 
+        {
             Res = Result.Success;
             return res;
         }
@@ -62,7 +62,7 @@ public class ResultEvalCalcService
     {
         float total_weight = 0;
         float sum = 0;
-        foreach(var eval in evals)
+        foreach (var eval in evals)
         {
             total_weight += eval.Item3;
             sum += eval.Item1 / eval.Item2 * eval.Item3;
@@ -83,7 +83,7 @@ public class ResultEvalCalcService
     {
         float total_weight = 0;
         float sum = 0;
-        foreach(var eval in evals)
+        foreach (var eval in evals)
         {
             total_weight += eval.Item3;
             sum += (float)Math.Round(eval.Item1 / eval.Item2 * eval.Item3, 1);
@@ -97,5 +97,18 @@ public class ResultEvalCalcService
         }
         Res = Result.Success;
         return s_sum;
+    }
+
+    public string GetError()
+    {
+        return Res switch
+        {
+            Result.Success => "Success",
+            Result.StudentDoNotExist => "StudentDoNotExist",
+            Result.InvalidScore => "InvalidScore",
+            Result.CriterionDoNotExist => "CriterionDoNotExist",
+            Result.InvalidStrategy => "InvalidStrategy",
+            _ => "UnknownError",
+        };
     }
 }

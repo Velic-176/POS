@@ -10,6 +10,7 @@ public class GetStudentsCase
     {
         Success,
         DataBaseError,
+        DoNotExist
     }
     public Result Res{get; private set;}
     private readonly IStudentRepository _students_repo;
@@ -20,7 +21,7 @@ public class GetStudentsCase
         Res = Result.Success;
     }
 
-    public List<Student>? Get()
+    public List<Student>? GetAll()
     {
         var list = _students_repo.GetAll();
         if (list == null)
@@ -31,6 +32,29 @@ public class GetStudentsCase
         Res = Result.Success;
         return list;
     }
+
+    public Student? GetById(Guid student)
+    {
+        var st = _students_repo.GetById(student);
+        if (st == null)
+        {
+            Res = Result.DoNotExist;
+            return null;
+        }
+        Res = Result.Success;
+        return st;
+    }
+
+    public string GetError()
+    {
+        return Res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            _ => "UnknownError",
+        };
+    }
 }
 
 public class GetCriteriaCase
@@ -39,6 +63,7 @@ public class GetCriteriaCase
     {
         Success,
         DataBaseError,
+        DoNotExist
     }
     public Result Res{get; private set;}
     private readonly IRubricatorRepository _rubricator_repo;
@@ -49,7 +74,7 @@ public class GetCriteriaCase
         Res = Result.Success;
     }
 
-    public List<Criterion>? Get()
+    public List<Criterion>? GetAll()
     {
         var rubricator = _rubricator_repo.GetRub();
         if (rubricator == null)
@@ -64,6 +89,38 @@ public class GetCriteriaCase
 
         Res = Result.Success;
         return list;
+    }
+
+    public Criterion? GetByName(string name)
+    {
+        var rubricator = _rubricator_repo.GetRub();
+        if (rubricator == null)
+        {
+            Res = Result.DataBaseError;
+            return null;
+        }
+        
+        Criterion? cr = rubricator.GetByName(name);
+        if (cr == null)
+        {
+            Res = Result.DoNotExist;
+            return null;
+        }
+        
+
+        Res = Result.Success;
+        return cr;
+    }
+
+    public string GetError()
+    {
+        return Res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            _ => "UnknownError",
+        };
     }
 }
 
@@ -114,15 +171,36 @@ public class GetEvaluationsCase
             Evaluation? curr = null;   
             if (!evaluationsByCriterion.TryGetValue(cr.Id, out curr)) // если оценки по критерию нет, то это отобразится
             {
-                list.Add(new(CriterionName:cr.Name, MaxScore:cr.MaxScore.Value, Weight:cr.Weight.Value));
+                list.Add(new(CriterionId:cr.Id, CriterionName:cr.Name, MaxScore:cr.MaxScore.Value, Weight:cr.Weight.Value));
             }
             else
-                list.Add(new(CriterionName:cr.Name, Score:curr.Score.Value, MaxScore:cr.MaxScore.Value, 
+                list.Add(new(CriterionId:cr.Id, CriterionName:cr.Name, Score:curr.Score.Value, MaxScore:cr.MaxScore.Value, 
                              Weight:cr.Weight.Value, Date:curr.Date, Comment:curr.Comment));
         }
         Res = Result.Success;
         return list;
     }
 
-    
+    public Evaluation? GetById(Evaluation.EvaluationId id)
+    {
+        var eval = _evaluation_repo.GetById(id);
+        if (eval == null)
+        {
+            Res = Result.DoNotExist;
+            return null;
+        }
+        Res = Result.Success;
+        return eval;
+    }
+
+    public string GetError()
+    {
+        return Res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            _ => "UnknownError",
+        };
+    }
 }

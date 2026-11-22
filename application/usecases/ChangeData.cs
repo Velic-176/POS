@@ -33,6 +33,18 @@ public class ChangeStudentCase
 
         return Result.Success;
     }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            Result.InvalidArg => "InvalidArg",
+            _ => "UnknownError",
+        };
+    }
 }
 
 public class ChangeCriterionCase
@@ -91,6 +103,18 @@ public class ChangeCriterionCase
 
         return Result.Success;
     }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            Result.InvalidArg => "InvalidArg",
+            _ => "UnknownError",
+        };
+    }
 }
 
 public class ChangeEvaluationCase
@@ -131,5 +155,17 @@ public class ChangeEvaluationCase
             return Result.DataBaseError;
 
         return Result.Success;
+    }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            Result.InvalidArg => "InvalidArg",
+            _ => "UnknownError",
+        };
     }
 }

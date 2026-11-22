@@ -11,7 +11,7 @@ public class DeleteStudentCase
         DataBaseError,
         DoNotExist
     }
-    public Result Res{get; private set;}
+    // public Result Res{get; private set;}
     private readonly IStudentRepository _students_repo;
     private readonly DeleteEvaluationCase _delete_evals;
 
@@ -19,7 +19,7 @@ public class DeleteStudentCase
     {
         _students_repo = students;
         _delete_evals = delete;
-        Res = Result.Success;
+        // Res = Result.Success;
     }
 
     public Result DeleteById(Guid id)
@@ -37,6 +37,17 @@ public class DeleteStudentCase
             return Result.DataBaseError;
         
         return Result.Success;
+    }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            _ => "UnknownError",
+        };
     }
 }
 
@@ -96,6 +107,18 @@ public class DeleteCriterionCase
 
         return Result.Success;
     }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.CriterionDoesNotExist => "CriterionDoesNotExist",
+            Result.EvaluationDoesNotExist => "EvaluationDoesNotExist",
+            _ => "UnknownError",
+        };
+    }
 }
 
 public class DeleteEvaluationCase
@@ -143,5 +166,16 @@ public class DeleteEvaluationCase
         }
 
         return Result.Success;
+    }
+
+    public string GetError(Result res)
+    {
+        return res switch
+        {
+            Result.Success => "Success",
+            Result.DataBaseError => "DataBaseError",
+            Result.DoNotExist => "DoNotExist",
+            _ => "UnknownError",
+        };
     }
 }
