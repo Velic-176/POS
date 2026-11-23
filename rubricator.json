@@ -8,7 +8,13 @@
   {
     "Id": "e5cdb379-b829-4eaf-a8af-c04d9b9191b9",
     "Name": "\u043A\u043F\u043E",
-    "MaxScore": 9,
-    "Weight": 0.9
+    "MaxScore": 10,
+    "Weight": 0.6
+  },
+  {
+    "Id": "0e986499-c113-4988-b9df-0f884077dbac",
+    "Name": "\u043F\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435",
+    "MaxScore": 1,
+    "Weight": 0.2
   }
 ]

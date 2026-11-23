@@ -412,6 +412,7 @@ public class ConsoleMenu
             _output.WriteLine("2. Добавить оценку");
             _output.WriteLine("3. Изменить оценку");
             _output.WriteLine("0. Назад");
+            _output.Write("\n");
             int command = ReadInt("Введите номер команды: ", 4);
             _output.Write("\n");
 
@@ -503,7 +504,7 @@ public class ConsoleMenu
     void PrintEvaluation(EvaluationInfo eval)
     {
         if (eval.Score == null)
-            _output.WriteLine($"{eval.CriterionName} : не оценено");
+            _output.WriteLine($"{eval.CriterionName} : не оценено / {eval.MaxScore}");
         else
             _output.WriteLine($"{eval.CriterionName} : {eval.Score} / {eval.MaxScore}");
 

@@ -65,7 +65,9 @@ public class ResultEvalCalcService
         foreach (var eval in evals)
         {
             total_weight += eval.Item3;
-            sum += eval.Item1 / eval.Item2 * eval.Item3;
+            float buff = eval.Item2 * eval.Item3;
+            if (buff != 0)
+                sum += eval.Item1 / eval.Item2 * eval.Item3;
         }
         sum /= total_weight;
         Score? s_sum = Score.Create((float)Math.Round(sum, 1));

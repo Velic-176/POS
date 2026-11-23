@@ -87,22 +87,25 @@ public class CalculateResultScore
     }
 
     // score, max_score, weight
-    static List<Tuple<float, float, float>> ConvertToTuple(List<Evaluation> evaluations, List<Criterion> criteria)
+    static List<Tuple<float, float, float>>? ConvertToTuple(List<Evaluation> evaluations, List<Criterion> criteria)
     {
         List<Tuple<float, float, float>> res = [];
         foreach (Criterion criterion in criteria)
         {
+            bool is_exist = false;
             foreach (Evaluation eval in evaluations)
             {
                 if (criterion.Id == eval.Id.CriterionId)
                 {
                     res.Add(new(eval.Score.Value, criterion.MaxScore.Value, criterion.Weight.Value));
                     evaluations.Remove(eval);
+                    is_exist = true;
                     break;
                 }
             
-            res.Add(new(0f, criterion.MaxScore.Value, criterion.Weight.Value));
             }
+            if (!is_exist)
+                res.Add(new(0f, criterion.MaxScore.Value, criterion.Weight.Value));
         }
 
         return res;

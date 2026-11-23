@@ -27,6 +27,7 @@ class Program
         // import / export
         services.AddTransient<IEvaluationImporter, CsvEvaluationImporter>();
         services.AddTransient<IEvaluationImporter, JsonEvaluationImporter>();
+        services.AddTransient<IEvaluationImporterFactory, EvaluationImporterFactory>();
 
         services.AddTransient<IEvaluationExporter, CsvResultsExporter>();
 
