@@ -2,7 +2,6 @@ using POS.application.interfaces;
 using POS.application.models;
 using POS.domain.entities;
 using POS.domain.interfaces;
-using POS.infrastructure.Import;
 
 namespace POS.application.usecases;
 
@@ -11,9 +10,9 @@ public class ImportEvaluationsCase
     private readonly IEvaluationRepository _evaluations_repo;
     private readonly IStudentRepository _students_repo;
     private readonly IRubricatorRepository _rubricator_repo;
-    private readonly EvaluationImporterFactory _factory;
+    private readonly IEvaluationFactory _factory;
 
-    public ImportEvaluationsCase(IEvaluationRepository evaluations, IStudentRepository students, IRubricatorRepository criteria, EvaluationImporterFactory fact)
+    public ImportEvaluationsCase(IEvaluationRepository evaluations, IStudentRepository students, IRubricatorRepository criteria, IEvaluationFactory fact)
     {
         _evaluations_repo = evaluations;
         _students_repo = students;

@@ -2,7 +2,7 @@ using POS.application.interfaces;
 
 namespace POS.infrastructure.Import;
 
-public class EvaluationImporterFactory
+public class EvaluationImporterFactory : IEvaluationFactory
 {
     private readonly Dictionary<string, IEvaluationImporter> _importers;
 
