@@ -1,6 +1,6 @@
 namespace POS.application.interfaces;
 
-public interface IEvaluationFactory
+public interface IEvaluationImporterFactory
 {
     IEvaluationImporter? Create(string path);
 }

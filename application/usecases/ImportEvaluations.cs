@@ -10,9 +10,9 @@ public class ImportEvaluationsCase
     private readonly IEvaluationRepository _evaluations_repo;
     private readonly IStudentRepository _students_repo;
     private readonly IRubricatorRepository _rubricator_repo;
-    private readonly IEvaluationFactory _factory;
+    private readonly IEvaluationImporterFactory _factory;
 
-    public ImportEvaluationsCase(IEvaluationRepository evaluations, IStudentRepository students, IRubricatorRepository criteria, IEvaluationFactory fact)
+    public ImportEvaluationsCase(IEvaluationRepository evaluations, IStudentRepository students, IRubricatorRepository criteria, IEvaluationImporterFactory fact)
     {
         _evaluations_repo = evaluations;
         _students_repo = students;
