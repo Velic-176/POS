@@ -25,7 +25,9 @@ class Program
         services.AddTransient<ResultEvalCalcService>(_ => new ResultEvalCalcService(1));
 
         // import / export
-        services.AddTransient<IEvaluationImporterFactory>();
+        services.AddTransient<IEvaluationImporter, CsvEvaluationImporter>();
+        services.AddTransient<IEvaluationImporter, JsonEvaluationImporter>();
+
         services.AddTransient<IEvaluationExporter, CsvResultsExporter>();
 
         // use cases: добавление
