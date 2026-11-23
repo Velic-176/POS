@@ -100,9 +100,9 @@ public class CalculateResultScore
                     evaluations.Remove(eval);
                     break;
                 }
-            }
-
+            
             res.Add(new(0f, criterion.MaxScore.Value, criterion.Weight.Value));
+            }
         }
 
         return res;
